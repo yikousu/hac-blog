@@ -1,2 +1,0 @@
-# hac-blog
-hac-blog
