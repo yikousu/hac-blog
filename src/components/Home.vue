@@ -21,14 +21,6 @@
                 <li>
                     <p>WeChat: VM47331</p>
                 </li>
-                <li>
-                    <p>
-                        CSDN博客:
-                        <a href="https://blog.csdn.net/m0_64289188" target="_blank" style="text-decoration: none;">
-                            blog.csdn.net/m0_64289188
-                        </a>
-                    </p>
-                </li>
             </ul>
 
             <blockquote>
