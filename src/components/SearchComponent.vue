@@ -4,16 +4,25 @@
       <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="输入关键词搜索..."
         class="search-input" />
       <div class="engine-selector" @click.stop="toggleDropdown">
-        <span>{{ currentEngine.name }}</span>
+        <span>选择搜索引擎</span>
         <i class="dropdown-icon" :class="{ 'open': isDropdownOpen }">▼</i>
       </div>
       <button @click="performSearch" class="search-button">搜索</button>
 
-      <!-- 搜索引擎下拉菜单 -->
-      <div v-if="isDropdownOpen" class="dropdown-menu">
-        <div v-for="engine in searchEngines" :key="engine.id" @click.stop="handleEngineSelection(engine)"
-          class="dropdown-item" :class="{ 'active': currentEngine.id === engine.id }">
-          {{ engine.name }}
+      <!-- 搜索引擎单选下拉菜单 -->
+      <div v-if="isDropdownOpen" class="dropdown-menu single-select">
+        <h3 class="dropdown-title">选择搜索引擎</h3>
+        <div v-for="category in engineCategories" :key="category.name" class="engine-category">
+          <h4 class="category-title">{{ category.name }}</h4>
+          <div class="engine-list">
+            <div v-for="engine in category.engines" :key="engine.id" class="dropdown-item radio-item"
+              :class="{ 'active': selectedEngine === engine.id }">
+              <label>
+                <input type="radio" :value="engine.id" v-model="selectedEngine" @click.stop>
+                {{ engine.name }}
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -27,6 +36,11 @@ interface SearchEngine {
   id: string;
   name: string;
   url: string;
+}
+
+interface EngineCategory {
+  name: string;
+  engines: SearchEngine[];
 }
 
 // 搜索引擎列表
@@ -49,9 +63,24 @@ const searchEngines: SearchEngine[] = [
   { id: 'yahoo', name: 'Yahoo', url: 'https://search.yahoo.com/search?p=' },
 ];
 
+// 搜索引擎分类
+const engineCategories: EngineCategory[] = [
+  {
+    name: '通用搜索',
+    engines: searchEngines.filter(engine => ['bing', 'google', 'wikipedia', 'duckduckgo', 'yahoo', 'yandex'].includes(engine.id))
+  },
+  {
+    name: '社交媒体',
+    engines: searchEngines.filter(engine => ['twitter', 'weibo', 'douyin', 'zhihu', 'youtube', 'bilibili'].includes(engine.id))
+  },
+  {
+    name: '开发者资源',
+    engines: searchEngines.filter(engine => ['github', 'gitee', 'stackoverflow', 'csdn'].includes(engine.id))
+  }
+];
 
-// 当前选中的搜索引擎
-const currentEngine = ref<SearchEngine>(searchEngines[0]);
+// 已选择的搜索引擎ID
+const selectedEngine = ref<string>('bing');
 
 // 搜索关键词
 const searchQuery = ref('');
@@ -67,23 +96,25 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
 
-// 选择搜索引擎
-const handleEngineSelection = (engine: SearchEngine) => {
-  setTimeout(() => {
-    currentEngine.value = engine;
-    isDropdownOpen.value = false;
-  }, 100);
-};
-
 // 执行搜索
 const performSearch = () => {
-  if (searchQuery.value.trim()) {
-    const searchUrl = currentEngine.value.url + encodeURIComponent(searchQuery.value);
-    window.open(searchUrl, '_blank');
+  if (searchQuery.value.trim() && selectedEngine.value) {
+    const query = encodeURIComponent(searchQuery.value);
+
+    // 获取选中的搜索引擎
+    const selectedEngineObject = searchEngines.find(engine =>
+      engine.id === selectedEngine.value
+    );
+
+    // 在选中的搜索引擎中打开搜索结果
+    if (selectedEngineObject) {
+      const searchUrl = selectedEngineObject.url + query;
+      window.open(searchUrl, '_blank');
+    }
   }
 };
 
-// 点击外部关闭下拉菜单（避免与 handleEngineSelection 冲突）
+// 点击外部关闭下拉菜单
 const handleClickOutside = (event: MouseEvent) => {
   if (searchBox.value && !searchBox.value.contains(event.target as Node)) {
     setTimeout(() => {
@@ -127,13 +158,15 @@ onUnmounted(() => {
   top: 100%;
   left: auto;
   right: 0;
-  width: 160px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  overflow: hidden;
   animation: fadeIn 0.2s ease;
+  padding: 10px 0;
 }
 
 
@@ -190,8 +223,34 @@ onUnmounted(() => {
 }
 
 
+.dropdown-title {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+.category-title {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #666;
+  background-color: #f9f9f9;
+  margin: 5px 0;
+}
+
+.engine-category {
+  margin-bottom: 10px;
+}
+
+.engine-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .dropdown-item {
-  padding: 12px 15px;
+  padding: 8px 15px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -201,9 +260,24 @@ onUnmounted(() => {
 }
 
 .dropdown-item.active {
-  background-color: #e8f5e9;
   color: #4caf50;
-  font-weight: bold;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+}
+
+.radio-item label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.radio-item input[type="radio"] {
+  margin-right: 8px;
+  cursor: pointer;
 }
 
 @keyframes fadeIn {
@@ -239,7 +313,15 @@ onUnmounted(() => {
   }
 
   .dropdown-menu {
-    min-width: 150px;
+    width: 100%;
+    max-width: 300px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+
+  .engine-list {
+    grid-template-columns: 1fr;
   }
 }
 </style>
