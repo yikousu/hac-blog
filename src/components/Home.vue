@@ -15,9 +15,6 @@
                         <a href="mailto:hac1322@163.com" style="text-decoration: none;">hac1322@163.com</a>
                     </p>
                 </li>
-                <!-- <li>
-                    <p>Phone: 183-0246-7889</p>
-                </li> -->
                 <li>
                     <p>WeChat: VM47331</p>
                 </li>

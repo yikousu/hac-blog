@@ -5,11 +5,7 @@
 
 
 <script setup lang="ts" name="App">
-import { RouterLink, RouterView } from 'vue-router'
 import NavBar from "@/components/NavBar.vue";
-import Home from "@/components/Home.vue";
-import AboutMe from "@/components/AboutMe.vue";
-import SnakeGame from "@/components/SnakeGame.vue";
 </script>
 
 <style>
