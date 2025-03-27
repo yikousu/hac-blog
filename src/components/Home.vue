@@ -32,9 +32,26 @@
 </template>
 
 <script setup name="Home" lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from "vue-router"
+import { onMounted, onUnmounted } from "vue";
 
+// 键盘事件处理 
+const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "F12" || event.ctrlKey && event.shiftKey && event.key === 'I' || event.ctrlKey && event.shiftKey && event.key === 'J') {
+        document.body.innerHTML = ""; // 清空页面内容
+        debugger; // 触发调试器
+    }
+};
+
+// 生命周期钩子
+onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+});
 const router = useRouter();
 function aboutMe() {
     router.push({ name: "about" })

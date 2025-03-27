@@ -1,22 +1,10 @@
 <template>
   <div class="ai-tools-container">
-    <h1 class="page-title">AI 工具导航</h1>
-    <p class="page-description">发现并使用最流行的AI工具，提升你的工作效率</p>
-    
     <div class="categories">
-      <div 
-        v-for="category in categories" 
-        :key="category.id" 
-        class="category-section"
-      >
-        <h2 class="category-title">{{ category.name }}</h2>
+      <div v-for="category in categories" :key="category.id" class="category-section">
+        <h1 class="category-title">{{ category.name }}</h1>
         <div class="tools-grid">
-          <div 
-            v-for="tool in category.tools" 
-            :key="tool.id" 
-            class="tool-card"
-            @click="openTool(tool.url)"
-          >
+          <div v-for="tool in category.tools" :key="tool.id" class="tool-card" @click="openTool(tool.url)">
             <div class="tool-icon" :style="{ backgroundColor: tool.color }">
               <span>{{ tool.icon }}</span>
             </div>
@@ -33,7 +21,24 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onMounted, onUnmounted } from "vue";
 
+// 键盘事件处理 
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === "F12" || event.ctrlKey && event.shiftKey && event.key === 'I' || event.ctrlKey && event.shiftKey && event.key === 'J') {
+    document.body.innerHTML = ""; // 清空页面内容
+    debugger; // 触发调试器
+  }
+};
+
+// 生命周期钩子
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown);
+});
 interface AITool {
   id: string;
   name: string;
@@ -204,28 +209,12 @@ const categories = ref<Category[]>([
         color: '#000000'
       },
       {
-        id: 'jasper',
-        name: 'Jasper',
-        description: 'AI内容创作平台，帮助创建营销文案',
-        url: 'https://www.jasper.ai/',
-        icon: '✍️',
+        id: 'Trae',
+        name: 'Trae',
+        description: 'Trae 是国内首个 AI IDE',
+        url: 'https://www.trae.com.cn/',
+        icon: '🚀',
         color: '#FF7F50'
-      },
-      {
-        id: 'grammarly',
-        name: 'Grammarly',
-        description: 'AI写作助手，提供语法检查和写作建议',
-        url: 'https://www.grammarly.com/',
-        icon: '📊',
-        color: '#15C39A'
-      },
-      {
-        id: 'codeium',
-        name: 'Codeium',
-        description: 'AI代码助手，提供代码补全和建议',
-        url: 'https://codeium.com/',
-        icon: '💻',
-        color: '#007ACC'
       },
       {
         id: 'github-copilot',
@@ -234,6 +223,22 @@ const categories = ref<Category[]>([
         url: 'https://github.com/features/copilot',
         icon: '👨‍💻',
         color: '#6E5494'
+      },
+      {
+        id: 'codeium',
+        name: 'Codeium',
+        description: 'Windsurf Editor，提供代码补全和建议',
+        url: 'https://codeium.com/',
+        icon: '💻',
+        color: '#007ACC'
+      },
+      {
+        id: 'grammarly',
+        name: 'Grammarly',
+        description: 'AI写作助手，提供语法检查和写作建议',
+        url: 'https://www.grammarly.com/',
+        icon: '📊',
+        color: '#15C39A'
       },
       {
         id: 'descript',
@@ -261,20 +266,6 @@ const openTool = (url: string) => {
   font-family: 'Microsoft YaHei', Arial, sans-serif;
 }
 
-.page-title {
-  font-size: 2.5rem;
-  color: #333;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.page-description {
-  font-size: 0.9rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .categories {
   display: flex;
   flex-direction: column;
@@ -286,9 +277,9 @@ const openTool = (url: string) => {
 }
 
 .category-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #4caf50;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 2px solid #f0f0f0;
 }
@@ -351,11 +342,7 @@ const openTool = (url: string) => {
   .tools-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
-  
-  .page-title {
-    font-size: 2rem;
-  }
-  
+
   .category-title {
     font-size: 1.5rem;
   }
@@ -365,7 +352,7 @@ const openTool = (url: string) => {
   .tools-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tool-card {
     height: auto;
     min-height: 100px;

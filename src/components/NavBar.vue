@@ -12,13 +12,31 @@
         <router-link to="/search" class="nav-link">搜索引擎</router-link>
         <router-link to="/snake" class="nav-link">贪吃蛇游戏</router-link>
         <router-link to="/ai-tools" class="nav-link">AI工具导航</router-link>
+        <router-link to="/message-board" class="nav-link">留言板</router-link>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-// 导航栏组件
+import { onMounted, onUnmounted } from "vue";
+
+// 键盘事件处理 
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === "F12" || event.ctrlKey && event.shiftKey && event.key === 'I' || event.ctrlKey && event.shiftKey && event.key === 'J') {
+    document.body.innerHTML = ""; // 清空页面内容
+    debugger; // 触发调试器
+  }
+};
+
+// 生命周期钩子
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <style scoped>
