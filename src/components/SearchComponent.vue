@@ -1,13 +1,8 @@
 <template>
   <div class="search-container">
     <div ref="searchBox" class="search-box">
-      <input 
-        type="text" 
-        v-model="searchQuery" 
-        @keyup.enter="performSearch" 
-        placeholder="输入关键词搜索..."
-        class="search-input"
-      />
+      <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="输入关键词搜索..."
+        class="search-input" />
       <div class="engine-selector" @click.stop="toggleDropdown">
         <span>{{ currentEngine.name }}</span>
         <i class="dropdown-icon" :class="{ 'open': isDropdownOpen }">▼</i>
@@ -16,13 +11,8 @@
 
       <!-- 搜索引擎下拉菜单 -->
       <div v-if="isDropdownOpen" class="dropdown-menu">
-        <div 
-          v-for="engine in searchEngines" 
-          :key="engine.id"
-          @click.stop="handleEngineSelection(engine)"
-          class="dropdown-item"
-          :class="{ 'active': currentEngine.id === engine.id }"
-        >
+        <div v-for="engine in searchEngines" :key="engine.id" @click.stop="handleEngineSelection(engine)"
+          class="dropdown-item" :class="{ 'active': currentEngine.id === engine.id }">
           {{ engine.name }}
         </div>
       </div>
@@ -114,7 +104,6 @@ onUnmounted(() => {
   width: 100%;
   max-width: 600px;
   border-radius: 30px;
-  overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   background-color: white;
   transition: all 0.3s ease;
@@ -123,6 +112,7 @@ onUnmounted(() => {
 .dropdown-menu {
   position: absolute;
   top: 100%;
+  left: auto;
   right: 0;
   width: 150px;
   background-color: white;
@@ -132,6 +122,7 @@ onUnmounted(() => {
   overflow: hidden;
   animation: fadeIn 0.2s ease;
 }
+
 
 .search-box:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -203,8 +194,15 @@ onUnmounted(() => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 响应式设计 */
@@ -214,19 +212,19 @@ onUnmounted(() => {
     border-radius: 15px;
     overflow: visible;
   }
-  
+
   .engine-selector {
     width: 100%;
     justify-content: space-between;
     border-left: none;
     border-top: 1px solid #e0e0e0;
   }
-  
+
   .search-button {
     width: 100%;
     padding: 12px;
   }
-  
+
   .dropdown-menu {
     min-width: 150px;
   }
