@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import qqqqq from "@/components/AboutMe.vue";
 import SnakeGame from "@/components/SnakeGame.vue";
+import SearchComponent from "@/components/SearchComponent.vue";
 
 let routes = [
   {
@@ -18,6 +19,11 @@ let routes = [
     path: "/snake",
     name: "snake",
     component: SnakeGame,
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: SearchComponent,
   },
   {
     path: "/",

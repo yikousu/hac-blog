@@ -5,7 +5,11 @@
       <div class="nav-links">
         <!-- <router-link to="/home" class="nav-link">首页</router-link> -->
         <router-link to="/about" class="nav-link">关于我</router-link>
-        <a href="https://blog.csdn.net/m0_64289188" class="nav-link" target="_blank">CSDN博客</a>
+        <a href="https://blog.csdn.net/m0_64289188" class="nav-link" target="_self">CSDN博客</a>
+        <!-- 控制链接的打开方式。_blank表示在新标签页或新窗口中打开链接，避免覆盖当前页面。 -->
+        <!-- _self	默认值。在当前窗口/标签页中加载链接（覆盖当前页面）。 -->
+        <a href="https://github.com/yikousu" class="nav-link" target="_self">Github</a>
+        <router-link to="/search" class="nav-link">搜索引擎</router-link>
         <router-link to="/snake" class="nav-link">贪吃蛇游戏</router-link>
       </div>
     </div>
