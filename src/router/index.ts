@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import qqqqq from "@/components/AboutMe.vue";
 import SnakeGame from "@/components/SnakeGame.vue";
 import SearchComponent from "@/components/SearchComponent.vue";
@@ -44,8 +44,7 @@ let routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
 });
-
 export default router;
