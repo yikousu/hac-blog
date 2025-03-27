@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import qqqqq from "@/components/AboutMe.vue";
 import SnakeGame from "@/components/SnakeGame.vue";
 import SearchComponent from "@/components/SearchComponent.vue";
+import AITools from "@/components/AITools.vue";
 
 let routes = [
   {
@@ -24,6 +25,11 @@ let routes = [
     path: "/search",
     name: "search",
     component: SearchComponent,
+  },
+  {
+    path: "/ai-tools",
+    name: "ai-tools",
+    component: AITools,
   },
   {
     path: "/",

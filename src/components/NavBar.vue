@@ -11,6 +11,7 @@
         <a href="https://github.com/yikousu" class="nav-link" target="_self">Github</a>
         <router-link to="/search" class="nav-link">搜索引擎</router-link>
         <router-link to="/snake" class="nav-link">贪吃蛇游戏</router-link>
+        <router-link to="/ai-tools" class="nav-link">AI工具导航</router-link>
       </div>
     </div>
   </nav>
