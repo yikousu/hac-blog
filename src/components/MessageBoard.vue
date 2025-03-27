@@ -87,7 +87,7 @@ const newMessage = ref<Omit<Message, 'id' | 'timestamp' | 'isAdmin' | 'signature
   content: ''
 });
 const isSubmitting = ref(false);
-let showExport = ref(false);
+let showExport = ref(false); // 默认不显示留言列表和导出面板
 
 // 计算属性
 const isFormValid = computed(() => {
@@ -118,14 +118,15 @@ const verifySignature = (message: Message): boolean => {
   return message.signature === expectedSignature;
 };
 
-// 从localStorage加载留言
-const loadMessages = () => {
+// 从文件加载留言
+const loadMessages = async () => {
   try {
-    const savedMessages = localStorage.getItem('hac-blog-messages');
-    if (savedMessages) {
-      const parsedMessages = JSON.parse(savedMessages) as Message[];
+    // 使用fetch API从assets目录加载messages.json文件
+    const response = await fetch('/src/assets/messages.json');
+    if (response.ok) {
+      const savedMessages = await response.json();
       // 验证每条留言的签名
-      messages.value = parsedMessages.filter(msg => verifySignature(msg));
+      messages.value = savedMessages.filter((msg: Message) => verifySignature(msg));
     }
   } catch (error) {
     console.error('加载留言失败:', error);
@@ -133,13 +134,37 @@ const loadMessages = () => {
   }
 };
 
-// 保存留言到localStorage
-const saveMessages = () => {
+// 保存留言到文件
+const saveMessages = async () => {
   try {
-    localStorage.setItem('hac-blog-messages', JSON.stringify(messages.value));
+    // 在开发环境中，使用Vite的HMR API来更新文件
+    // 注意：这只在开发环境中有效，生产环境需要后端API支持
+    if (import.meta.env.DEV) {
+      const messagesData = JSON.stringify(messages.value, null, 2);
+      
+      // 使用fetch API发送POST请求到Vite的开发服务器
+      const response = await fetch('/__update_messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filePath: 'src/assets/messages.json',
+          content: messagesData
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('保存留言失败');
+      }
+    } else {
+      // 在生产环境中，仍然使用localStorage作为备份
+      localStorage.setItem('hac-blog-messages-backup', JSON.stringify(messages.value));
+      console.warn('生产环境下无法直接写入文件，已保存到localStorage作为备份');
+    }
   } catch (error) {
     console.error('保存留言失败:', error);
-    ElMessage.error('保存留言失败，请检查浏览器存储空间');
+    ElMessage.error('保存留言失败，请检查网络连接');
   }
 };
 
@@ -278,6 +303,9 @@ const handleKeyDown = (event: KeyboardEvent) => {
 onMounted(() => {
   loadMessages();
   window.addEventListener('keydown', handleKeyDown);
+  
+  // 默认不显示留言列表，需要按Ctrl+Shift+E组合键才显示
+  showExport.value = false;
 });
 
 onUnmounted(() => {
