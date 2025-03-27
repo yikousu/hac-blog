@@ -31,11 +31,24 @@ interface SearchEngine {
 
 // 搜索引擎列表
 const searchEngines: SearchEngine[] = [
-  { id: 'google', name: 'Google', url: 'https://www.google.com/search?q=' },
   { id: 'bing', name: 'Bing', url: 'https://www.bing.com/search?q=' },
-  { id: 'baidu', name: '百度', url: 'https://www.baidu.com/s?wd=' },
+  { id: 'google', name: 'Google', url: 'https://www.google.com/search?q=' },
+  { id: 'bilibili', name: 'Bilibili', url: 'https://search.bilibili.com/all?keyword=' },
+  { id: 'douyin', name: '抖音', url: 'https://www.douyin.com/search/' },
   { id: 'github', name: 'GitHub', url: 'https://github.com/search?q=' },
+  { id: 'gitee', name: 'Gitee', url: 'https://search.gitee.com/?q=' },
+  { id: 'csdn', name: 'CSDN', url: 'https://so.csdn.net/so/search?q=' },
+  { id: 'stackoverflow', name: 'Stack Overflow', url: 'https://stackoverflow.com/search?q=' },
+  { id: 'zhihu', name: '知乎', url: 'https://www.zhihu.com/search?q=' },
+  { id: 'weibo', name: '微博', url: 'https://s.weibo.com/weibo?q=' },
+  { id: 'twitter', name: 'Twitter', url: 'https://twitter.com/search?q=' },
+  { id: 'youtube', name: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
+  { id: 'wikipedia', name: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Special:Search?search=' },
+  { id: 'yandex', name: 'Yandex', url: 'https://yandex.com/search/?text=' },
+  { id: 'duckduckgo', name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+  { id: 'yahoo', name: 'Yahoo', url: 'https://search.yahoo.com/search?p=' },
 ];
+
 
 // 当前选中的搜索引擎
 const currentEngine = ref<SearchEngine>(searchEngines[0]);
@@ -54,7 +67,7 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
 
-// 选择搜索引擎（修正点击外部后立刻关闭问题）
+// 选择搜索引擎
 const handleEngineSelection = (engine: SearchEngine) => {
   setTimeout(() => {
     currentEngine.value = engine;
@@ -114,7 +127,7 @@ onUnmounted(() => {
   top: 100%;
   left: auto;
   right: 0;
-  width: 150px;
+  width: 160px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
