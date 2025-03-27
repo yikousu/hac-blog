@@ -16,7 +16,8 @@
                     </p>
                 </li>
                 <li>
-                    <p>WeChat: VM47331</p>
+                    <p>Github: <a href="https://github.com/yikousu" class="nav-link" target="_self"
+                            style="text-decoration: none;">Github</a></p>
                 </li>
             </ul>
 
